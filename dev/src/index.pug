@@ -1,0 +1,23 @@
+//- src/assets/_layout/_default.pugを継承
+extends /assets/_layout/_default
+
+//- meta設定
+block vars
+  //- pugData.jsonの設定を上書き
+  - title = 'title上書き';
+  - description = 'description上書き';
+  - keywords = 'keywords上書き';
+
+  //- その他変数
+  - bodyClass = 'index';  //- bodyタグに付与するクラス
+
+//- ページ個別のCSS
+block css
+  link(rel="stylesheet", media="all", href="/assets/css/index.css", type="text/css")
+
+//- ページ個別のJS
+block script
+  //- script(src="/assets/js/index.js", type="text/javascript")
+
+//- ここからコンテンツ部分を記述
+block contents

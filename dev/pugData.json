@@ -1,0 +1,17 @@
+{
+  "siteUrl": "http://sample.com/",  "siteTitle": "site title",
+  "titleSeparater": " | ",
+  "keywords": "keywords,keywords,keywords",
+  "description": "description description description description",
+  "useTitleAsOgTitle": true,
+  "useDescriptionAsOgDescription": true,
+  "ogTitle": "ogTitle",
+  "ogDescription": "ogDescription ogDescription ogDescription ogDescription",
+  "ogImage": "http://sample.com/assets/common/ogp.png",
+  "ogType": "website",
+  "twitterCardType": "summary_large_image",
+  "appleTouchIcon": "/apple-touch-icon.png",
+  "favicon": "/favicon.png",
+  "showOGP": true,
+  "showTwitterCard": true
+}
