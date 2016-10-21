@@ -9,13 +9,26 @@ utils.isiPhone = ua.indexOf('iphone') isnt -1
 
 utils.isiPad = ua.indexOf('ipad') isnt -1
 
+utils.isIE9 = ua.indexOf('msie 9.0') isnt -1
+
+utils.isIE10 = ua.indexOf('msie 10.0') isnt -1
+
+utils.isIE11 = ua.indexOf('rv:11.0') isnt -1
+
+utils.isEdge = ua.indexOf('edge') isnt -1
+
+utils.isFirefox = ua.indexOf('firefox') isnt -1
+
+utils.isIE = utils.isIE9 or utils.isIE10 or utils.isIE11 or utils.isEdge
+
 
 utils.TRANSITION_END = 'transitionend webkitTransitionEnd mozTransitionEnd oTransitionEnd'
 
 
 utils.shareURLBase =
-  twitter: 'https://twitter.com/intent/tweet?url='
+  twitter: 'https://twitter.com/intent/tweet?text='
   facebook: 'https://www.facebook.com/sharer/sharer.php?&display=popup&u='
+  line: 'http://line.me/msg/text/?'
 
 
 utils.setUpBtnFacebook = ($btn, url, description = '')->
@@ -32,6 +45,15 @@ utils.setUpBtnTwitter = ($btn, url, text)->
   shareURL = "#{utils.shareURLBase.twitter}#{encodeURIComponent(url)}&text=#{encodeURIComponent(text)}"
   $btn.on 'click', (e)->
     window.open shareURL, 'twitterShare', 'width=670,height=400'
+    e.preventDefault()
+    return false
+
+
+utils.setUpBtnLine = ($btn, url, text)->
+  shareURL = "#{utils.shareURLBase.line}#{encodeURIComponent(text)}\n"
+  $btn.on 'click', (e)->
+    window.open shareURL, 'lineShare'
+    e.stopImmediatePropagation()
     e.preventDefault()
     return false
 
