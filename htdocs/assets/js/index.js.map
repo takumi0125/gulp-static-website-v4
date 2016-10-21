@@ -1,1 +1,0 @@
-{"version":3,"sources":["_init.coffee","index.coffee"],"names":["project","window","$","console","log"],"mappings":"CAAA,WAAA,GAAAA,EAAAA,GAAAC,OAAAD,YACAC,OAAAD,QAAAA,ECDAE,EAAA,iBACAC,SAAAC,IAAA","file":"index.js","sourcesContent":["project = window.project || {}\nwindow.project = project\n","$ ->\n  console.log 'index'\n"]}

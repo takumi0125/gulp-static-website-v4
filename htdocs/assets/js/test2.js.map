@@ -1,1 +1,0 @@
-{"version":3,"sources":["assets/js/test2.js"],"names":["console","log"],"mappings":"CAAA,WACEA,QAAQC,IAAI","file":"test2.js","sourcesContent":["(function() {\n  console.log('!!');\n})();\n"]}
