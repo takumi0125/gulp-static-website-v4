@@ -212,8 +212,8 @@ module.exports = (gulp, gulpPlugins, config)->
         module:
           loaders: [
             { test: /\.coffee$/, loader: 'coffee-loader' }
-            { test: /\.(js|es|es6)$/, loader: 'babel-loader', query: presets: [ 'es2015' ] }
-            { test: /\.(glsl|vert|frag)$/, loader: 'raw-loader' }
+            { test: /\.(es|es6)$/, loader: 'babel-loader', query: presets: [ 'es2015' ] }
+            { test: /\.(html|json|glsl|vert|frag)$/, loader: 'raw-loader' }
             { test: /\.(glsl|vert|frag)$/, loader: 'glslify-loader' }
           ]
         plugins: [

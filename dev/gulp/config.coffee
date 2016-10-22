@@ -43,7 +43,7 @@ module.exports = (devDir)->
       css: false
 
       # JSを圧縮するかどうか
-      js: false
+      js: true
 
     # sourcemapを作るかどうか
     sourcemap: true

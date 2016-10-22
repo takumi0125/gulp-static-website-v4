@@ -12,6 +12,9 @@ varying vec2 vUv;
 #pragma glslify: rotateVec3 = require('./lib/rotateVec3.glsl')
 #pragma glslify: map = require('./lib/map.glsl')
 #pragma glslify: hsv2rgb = require('./lib/hsv2rgb.glsl')
+#pragma glslify: easeOutExpo = require(glsl-easings/exponential-out)
+#pragma glslify: snoise2 = require(glsl-noise/simplex/2d)
+#pragma glslify: snoise3 = require(glsl-noise/simplex/3d)
 
 void main() {
   vec3 pos = vec3(0.0) + PI;

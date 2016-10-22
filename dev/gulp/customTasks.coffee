@@ -37,6 +37,15 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   #   'common'
   # )
 
+  # lib.js
+  utils.createWebpackJsTask(
+    'libJs'
+    [ "#{config.srcDir}/#{config.assetsDir}/js/_lib.coffee" ]
+    []
+    "#{config.publishDir}/#{config.assetsDir}/js"
+    'lib'
+  )
+
   # common.js
   utils.createWebpackJsTask(
     'commonJs'
