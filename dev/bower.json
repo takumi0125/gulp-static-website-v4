@@ -12,10 +12,17 @@
     "tests"
   ],
   "devDependencies": {
-    "jquery": "^3.1.1",
-    "gsap": "^1.19.0",
-    "underscore": "^1.8.3",
     "axios": "^0.15.2",
-    "three.js": "threejs#*"
+    "dat.gui": "*",
+    "es6-promise": "^4.0.5",
+    "gsap": "^1.19.0",
+    "jquery": "^3.1.1",
+    "jquery.cookie": "^1.4.1",
+    "underscore": "^1.8.3",
+    "noisejs": "https://github.com/josephg/noisejs.git",
+    "slick-carousel": "^1.6.0",
+    "three.js": "threejs#*",
+    "ua-parser-js": "^0.7.10",
+    "webfontloader": "^1.6.26"
   }
 }
