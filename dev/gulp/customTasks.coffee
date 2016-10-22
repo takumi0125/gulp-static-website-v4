@@ -4,7 +4,7 @@
 
 module.exports = (gulp, gulpPlugins, config, utils)->
   # indexSprites
-  # utils.createSpritesTask 'indexSprites', "#{config.assetsDir}/img", "#{config.assetsDir}/css", 'sprites', '../img/sprites.png', true
+  utils.createSpritesTask 'indexSprites', "#{config.assetsDir}/img", "#{config.assetsDir}/css", 'sprites', '../img/sprites.png', true
 
   # lib.js
   # utils.createJsConcatTask(
@@ -28,18 +28,23 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   # common.js
   # utils.createBrowserifyTask(
   #   'commonJs'
-  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_common/common.js" ]
+  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_common.coffee" ]
+  #   [
+  #     "#{config.srcDir}/#{config.assetsDir}/js/_utils/**/*"
+  #     "#{config.srcDir}/#{config.assetsDir}/js/_glsl/**/*"
+  #   ]
   #   "#{config.publishDir}/#{config.assetsDir}/js"
   #   'common'
   # )
 
-  # common2.js
-  # utils.createWebpackJsTask(
-  #   'commonJs2'
-  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_common2/common.js" ]
-  #   [
-  #     "#{config.srcDir}/#{config.assetsDir}/js/_common2/*"
-  #   ]
-  #   "#{config.publishDir}/#{config.assetsDir}/js"
-  #   'common2'
-  # )
+  # common.js
+  utils.createWebpackJsTask(
+    'commonJs'
+    [ "#{config.srcDir}/#{config.assetsDir}/js/_common.coffee" ]
+    [
+      "#{config.srcDir}/#{config.assetsDir}/js/_utils/**/*"
+      "#{config.srcDir}/#{config.assetsDir}/js/_glsl/**/*"
+    ]
+    "#{config.publishDir}/#{config.assetsDir}/js"
+    'common'
+  )
