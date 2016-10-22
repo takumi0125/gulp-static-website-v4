@@ -7,7 +7,7 @@ buffer        = require 'vinyl-buffer'
 pngquant      = require 'imagemin-pngquant'
 mergeStream   = require 'merge-stream'
 source        = require 'vinyl-source-stream'
-stringify     = require 'stringify'
+watchify      = require 'watchify'
 webpackStream = require 'webpack-stream'
 webpack       = require 'webpack'
 
@@ -74,7 +74,7 @@ module.exports = (gulp, gulpPlugins, config)->
 
         mergeStream imgStream, cssStream
 
-      config.optionsWatchTasks.unshift -> gulpPlugins.watch srcImgFiles, -> gulp.start [ taskName ]
+      config.optionsWatchTasks.unshift -> gulp.watch srcImgFiles, [ taskName ]
 
 
     #
@@ -84,8 +84,9 @@ module.exports = (gulp, gulpPlugins, config)->
     # @param {Array|String} src             ソースパス node-globのシンタックスで指定
     # @param {String}       outputDir       最終的に出力されるjsが格納されるディレクトリ
     # @param {String}       outputFileName  最終的に出力されるjsファイル名(拡張子なし)
+    # @param {Boolean}      compress        圧縮するかどうか
     #
-    createCoffeeExtractTask: (taskName, src, outputDir, outputFileName) ->
+    createCoffeeExtractTask: (taskName, src, outputDir, outputFileName, compress = true) ->
       config.jsConcatTaskNames.push taskName
       if src instanceof String then src = [ src ]
       for srcPath in src then config.filePath.coffeeInclude.push "!#{srcPath}"
@@ -110,32 +111,29 @@ module.exports = (gulp, gulpPlugins, config)->
         .pipe gulp.dest outputDir
         .pipe gulpPlugins.debug title: gulpPlugins.util.colors.cyan("[#{taskName}]")
 
-      config.optionsWatchTasks.push -> gulpPlugins.watch src, -> gulp.start [ taskName ]
+      config.optionsWatchTasks.push -> gulp.watch src, [ taskName ]
 
 
     #
-    # browserifyのタスクを生成 (coffeescript, babel[es2015], glsl使用)
+    # browserifyのタスクを生成 (coffeescript, babel[es2015]使用)
     #
     # @param {String}       taskName        タスクを識別するための名前 すべてのタスク名と異なるものにする
     # @param {Array|String} entries         browserifyのentriesオプションに渡す node-globのシンタックスで指定
-    # @param {Array|String} src             entriesを除いた全ソースファイル (watchタスクで監視するため) node-globのシンタックスで指定
     # @param {String}       outputDir       最終的に出力されるjsが格納されるディレクトリ
     # @param {String}       outputFileName  最終的に出力されるjsファイル名(拡張子なし)
+    # @param {String}       compress        圧縮するかどうか
     #
     # entries以外のソースファイルを指定する理由は、coffeeInclude標準のwatchの監視の対象外にするためです。
     #
-    createBrowserifyTask: (taskName, entries, src, outputDir, outputFileName) ->
+    createBrowserifyTask: (taskName, entries, outputDir, outputFileName, compress = true) ->
       config.jsConcatTaskNames.push taskName
 
       if entries instanceof String then entries = [ entries ]
       for entryPath in entries then config.filePath.coffeeInclude.push "!#{entryPath}"
 
-      if src instanceof String then src = [ src ]
-      for srcPath in src then config.filePath.coffeeInclude.push "!#{srcPath}"
-
       bundle = (b)->
         stream = b.bundle()
-        # .pipe gulpPlugins.plumber errorHandler: false
+        # .pipe gulpPlugins.plumber errorHandler: utils.errorHandler taskName
         .on 'error', ->
           # can't handle error by plumber
           args = Array.prototype.slice.call arguments
@@ -155,10 +153,7 @@ module.exports = (gulp, gulpPlugins, config)->
           { loadMaps: true }
         )
 
-        jsFilter = gulpPlugins.filter ['*.js', '!*.map'], { restore: true }
-        stream = stream.pipe jsFilter
-        stream = utils.compressJs stream
-        .pipe jsFilter.restore
+        stream
         .pipe gulp.dest outputDir
         .pipe gulpPlugins.debug title: gulpPlugins.util.colors.cyan("[#{taskName}]")
 
@@ -166,35 +161,39 @@ module.exports = (gulp, gulpPlugins, config)->
       browserifyTask = (watch = false)->
         b = browserify
           entries: entries
-          extensions: [ '.coffee', '.es', '.es6', '.glsl', '.vert', '.frag' ]
+          extensions: [ '.coffee' ]
           debug: true
-        .transform 'babelify', { presets: [ 'es2015' ], plugins: [ 'glslify' ] }
+        .transform 'babelify', { presets: [ 'es2015' ] }
         .transform 'coffeeify'
         .transform 'debowerify'
-        .transform 'glslify'
-        .transform stringify, {
-          appliesTo: { includeExtensions: [ '.html', '.json' ] }
-          minify: true
-        }
+
+        if watch
+          b.plugin watchify
+          b.on 'update', -> bundle(b)
+
         bundle b
 
+      watchifyTaskName = "#{taskName}Watchify"
+
       gulp.task taskName, -> browserifyTask(false)
-      config.optionsWatchTasks.push -> gulpPlugins.watch entries.concat(src), -> gulp.start [ taskName ]
+      gulp.task watchifyTaskName, -> browserifyTask(true)
+
+      config.watchifyTaskNames.push watchifyTaskName
 
 
     #
-    # webpackのタスクを生成 (coffeescript, babel[es2015], glsl使用)
+    # webpackのタスクを生成 (coffeescript, babel[es2015]使用)
     #
     # @param {String}       taskName        タスクを識別するための名前 すべてのタスク名と異なるものにする
     # @param {Array|String} entries         browserifyのentriesオプションに渡す node-globのシンタックスで指定
     # @param {Array|String} src             entriesを除いた全ソースファイル (watchタスクで監視するため) node-globのシンタックスで指定
     # @param {String}       outputDir       最終的に出力されるjsが格納されるディレクトリ
     # @param {String}       outputFileName  最終的に出力されるjsファイル名(拡張子なし)
+    # @param {Boolean}      compress        圧縮するかどうか
     #
     # entries以外のソースファイルを指定する理由は、coffeeInclude標準のwatchの監視の対象外にするためです。
-    # 複数の entry ファイルに対応していません。1タスクごとに1JSファイルがアウトプットされます。
     #
-    createWebpackJsTask: (taskName, entries, src, outputDir, outputFileName) ->
+    createWebpackJsTask: (taskName, entries, src, outputDir, outputFileName, compress = true) ->
       config.jsConcatTaskNames.push taskName
 
       if entries instanceof String then entries = [ entries ]
@@ -212,18 +211,16 @@ module.exports = (gulp, gulpPlugins, config)->
         module:
           loaders: [
             { test: /\.coffee$/, loader: 'coffee-loader' }
-            { test: /\.(js|es|es6)$/, loader: 'babel-loader', query: presets: [ 'es2015' ] }
-            { test: /\.(glsl|vert|frag)$/, loader: 'raw-loader' }
-            { test: /\.(glsl|vert|frag)$/, loader: 'glslify-loader' }
+            { test: /\.js$/, loader: 'babel-loader', query: presets: [ 'es2015' ] }
           ]
         plugins: [
           new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
-          )
+          ),
         ]
+
         resolve:
-          root: [ config.devDir + "/bower_components" ]
-          extensions: [ '', '.js', '.json', '.coffee', '.es', '.es6', '.glsl', '.vert', '.frag' ]
+          extensions: ['', '.js', '.json', '.coffee']
 
       if config.sourcemap
         webpackConfig.devtool = 'source-map'
@@ -234,8 +231,7 @@ module.exports = (gulp, gulpPlugins, config)->
 
       gulp.task taskName, ->
         stream = gulp.src entries
-        .pipe gulpPlugins.plumber errorHandler: utils.errorHandler taskName
-        .pipe webpackStream webpackConfig, null, (e, stats)->
+        .pipe webpackStream webpackConfig
 
         jsFilter = gulpPlugins.filter ['*.js', '!*.map'], { restore: true }
         stream = stream.pipe jsFilter
@@ -244,7 +240,7 @@ module.exports = (gulp, gulpPlugins, config)->
 
         stream.pipe gulp.dest outputDir
 
-      config.optionsWatchTasks.push -> gulpPlugins.watch entries.concat(src), -> gulp.start [ taskName ]
+      config.optionsWatchTasks.push -> gulp.watch src, [ taskName ]
 
 
     #
@@ -271,7 +267,7 @@ module.exports = (gulp, gulpPlugins, config)->
         .pipe gulp.dest outputDir
         .pipe gulpPlugins.debug title: gulpPlugins.util.colors.cyan("[#{taskName}]")
 
-      config.optionsWatchTasks.push -> gulpPlugins.watch src, -> gulp.start [ taskName ]
+      config.optionsWatchTasks.push -> gulp.watch src, [ taskName ]
 
 
     #
