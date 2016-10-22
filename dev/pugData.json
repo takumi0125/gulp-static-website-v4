@@ -1,5 +1,6 @@
 {
-  "siteUrl": "http://sample.com/",  "siteTitle": "site title",
+  "siteUrl": "http://sample.com/",
+  "siteTitle": "site title",
   "titleSeparater": " | ",
   "keywords": "keywords,keywords,keywords",
   "description": "description description description description",
