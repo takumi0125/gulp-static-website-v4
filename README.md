@@ -118,7 +118,7 @@ coffee script で concat する場合のタスクを生成する関数です。
  - `outputDir` **{String}**: 最終的に出力される js が格納されるディレクトリ
  - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
 
-### createBrowserifyTask
+### utils.createBrowserifyTask
 browserify のタスクを生成する関数です。coffee script, babel (es2015), glsl と bowerを使用できます。
 
 bowerを使用する場合は、タスク実行前に
