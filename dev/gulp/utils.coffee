@@ -264,7 +264,7 @@ module.exports = (gulp, gulpPlugins, config)->
 
         stream = utils.sourcemap stream, (stream)->
           return stream
-          .pipe gulpPlugins.concat "#{outputFileName}.js", { newLine: ';' }
+          .pipe gulpPlugins.concat "#{outputFileName}.js"
           .pipe gulpPlugins.uglify preserveComments: 'some'
 
         stream

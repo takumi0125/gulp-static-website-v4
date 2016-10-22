@@ -7,12 +7,12 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   utils.createSpritesTask 'indexSprites', "#{config.assetsDir}/img", "#{config.assetsDir}/css", 'sprites', '../img/sprites.png', true
 
   # lib.js
-  # utils.createJsConcatTask(
-  #   'concatLibJs'
-  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_lib/**/*" ]
-  #   "#{config.publishDir}/#{config.assetsDir}/js"
-  #   'lib'
-  # )
+  utils.createJsConcatTask(
+    'concatLibJs'
+    [ "#{config.srcDir}/#{config.assetsDir}/js/_lib/**/*" ]
+    "#{config.publishDir}/#{config.assetsDir}/js"
+    'lib'
+  )
 
   # index.js
   # utils.createCoffeeExtractTask(
@@ -36,15 +36,6 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   #   "#{config.publishDir}/#{config.assetsDir}/js"
   #   'common'
   # )
-
-  # lib.js
-  utils.createWebpackJsTask(
-    'libJs'
-    [ "#{config.srcDir}/#{config.assetsDir}/js/_lib.coffee" ]
-    []
-    "#{config.publishDir}/#{config.assetsDir}/js"
-    'lib'
-  )
 
   # common.js
   utils.createWebpackJsTask(
