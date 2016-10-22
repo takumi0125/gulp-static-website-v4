@@ -4,9 +4,6 @@
 
 module.exports = (devDir)->
   config =
-    # devDir
-    devDir: devDir
-
     # ソースディレクトリ
     srcDir: "#{devDir}/src"
 
@@ -43,7 +40,7 @@ module.exports = (devDir)->
       css: false
 
       # JSを圧縮するかどうか
-      js: false
+      js: true
 
     # sourcemapを作るかどうか
     sourcemap: true

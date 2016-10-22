@@ -117,9 +117,10 @@ coffee script で concat する場合のタスクを生成する関数です。
  - `src` **{Array|String}**: ソースパス node-glob のシンタックスで指定
  - `outputDir` **{String}**: 最終的に出力される js が格納されるディレクトリ
  - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
+ - `compress` **{Boolean}**: 圧縮するかどうか
 
 ### createBrowserifyTask
-browserify のタスクを生成する関数です。coffee script, babel (es2015), glsl と bowerを使用できます。
+browserify のタスクを生成する関数です。coffee script, babel (es2015) と bowerを使用できます。
 
 bowerを使用する場合は、タスク実行前に
 ```
@@ -131,15 +132,13 @@ bower install
 
  - `taskName` **{Object}**: タスクを識別するための名前 すべてのタスク名と異なるものにする
  - `entries` **{Array|String}**: browserify の entriesオプションに渡す node-glob のシンタックスで指定
- - `src` **{Array|String}**: entries を除いた全ソースファイル ( watch タスクで監視するため) node-glob のシンタックスで指定
  - `outputDir` **{String}**: 最終的に出力されるjsが格納されるディレクトリ
  - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
+ - `compress` **{Boolean}**: 圧縮するかどうか
 
 
 ### utils.createWebpackJsTask
-webpack のタスクを生成する関数です。browserify 同様、coffee script, babel (es2015), glsl と bowerを使用できます。
-
-※複数の entry ファイルに対応していません。1タスクごとに1JSファイルがアウトプットされます。
+webpack のタスクを生成する関数です。coffee script, babel (es2015) と bowerを使用できます。
 
 **Params**
 
@@ -148,6 +147,7 @@ webpack のタスクを生成する関数です。browserify 同様、coffee scr
  - `src` **{Array|String}**: entries を除いた全ソースファイル ( watch タスクで監視するため) node-glob のシンタックスで指定
  - `outputDir` **{String}**: 最終的に出力されるjsが格納されるディレクトリ
  - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
+ - `compress` **{Boolean}**: 圧縮するかどうか
 
 
 ### utils.createJsConcatTask

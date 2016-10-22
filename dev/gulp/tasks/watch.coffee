@@ -7,22 +7,22 @@ connectSSI = require 'connect-ssi'
 module.exports = (gulp, gulpPlugins, config, utils)->
   gulp.task 'watch', config.watchifyTaskNames, ->
     # config.pugData更新時
-    gulpPlugins.watch config.pugData, -> gulp.start [ 'pugAll' ]
+    gulp.watch config.pugData, [ 'pugAll' ]
 
-    gulpPlugins.watch utils.createSrcArr('html'),   -> gulp.start [ 'copyHtml' ]
-    gulpPlugins.watch utils.createSrcArr('css'),    -> gulp.start [ 'copyCss' ]
-    gulpPlugins.watch utils.createSrcArr('js'),     -> gulp.start [ 'copyJs' ]
-    gulpPlugins.watch utils.createSrcArr('json'),   -> gulp.start [ 'copyJson' ]
-    gulpPlugins.watch utils.createSrcArr('img'),    -> gulp.start [ 'copyImg' ]
-    gulpPlugins.watch utils.createSrcArr('others'), -> gulp.start [ 'copyOthers' ]
-    gulpPlugins.watch utils.createSrcArr('pug'),    -> gulp.start [ 'pug' ]
-    gulpPlugins.watch utils.createSrcArr('sass'),   -> gulp.start [ 'sass' ]
-    gulpPlugins.watch utils.createSrcArr('coffee'), -> gulp.start [ 'coffee' ]
+    gulp.watch utils.createSrcArr('html'),     [ 'copyHtml' ]
+    gulp.watch utils.createSrcArr('css'),      [ 'copyCss' ]
+    gulp.watch utils.createSrcArr('js'),       [ 'copyJs' ]
+    gulp.watch utils.createSrcArr('json'),     [ 'copyJson' ]
+    gulp.watch utils.createSrcArr('img'),      [ 'copyImg' ]
+    gulp.watch utils.createSrcArr('others'),   [ 'copyOthers' ]
+    gulp.watch utils.createSrcArr('pug'),      [ 'pug' ]
+    gulp.watch utils.createSrcArr('sass'),     [ 'sass' ]
+    gulp.watch utils.createSrcArr('coffee'),   [ 'coffee' ]
 
     # インクルードファイル(アンスコから始まるファイル)更新時はすべてをコンパイル
-    gulpPlugins.watch config.filePath.pugInclude,    -> gulp.start [ 'pugAll' ]
-    gulpPlugins.watch config.filePath.sassInclude,   -> gulp.start [ 'sassAll' ]
-    gulpPlugins.watch config.filePath.coffeeInclude, -> gulp.start [ 'coffeeAll' ]
+    gulp.watch config.filePath.pugInclude,      [ 'pugAll' ]
+    gulp.watch config.filePath.sassInclude,     [ 'sassAll' ]
+    gulp.watch config.filePath.coffeeInclude,   [ 'coffeeAll' ]
 
     for task in config.optionsWatchTasks then task()
 
@@ -37,4 +37,4 @@ module.exports = (gulp, gulpPlugins, config, utils)->
         connectSSI
           baseDir: config.publishDir
           ext: '.html'
-    .pipe gulpPlugins.notify "[watch]: start local server. http://localhost:50000#{config.serverDefaultPath}"
+    .pipe gulpPlugins.notify "[watcher]: start local server. http://localhost:50000#{config.serverDefaultPath}"

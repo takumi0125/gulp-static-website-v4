@@ -1,6 +1,6 @@
 #
 # フロントエンド開発用 汎用gulpテンプレート
-# v4.1.0
+# v4.0.0
 #
 
 # config
@@ -25,6 +25,9 @@ config.spritesTaskNames = []
 
 # JS連結のタスク名を格納する配列
 config.jsConcatTaskNames = []
+
+# watchifyのタスク名を格納する配列
+config.watchifyTaskNames = []
 
 # オプションのウォッチタスクを格納する配列
 config.optionsWatchTasks = []
