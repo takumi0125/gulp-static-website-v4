@@ -13,7 +13,7 @@ module.exports = (gulp, gulpPlugins, config, utils)->
       else
         # オプション指定でライブラリディレクトリに自動でインストール
         jsFilter = gulpPlugins.filter '**/*.js', { restore: true }
-        cssFilter = gulpPlugins.filter '**/*.css', { restore: true }
+        cssFilter = gulpPlugins.filter '**/*.scss', { restore: true }
         gulp.src bower
           debugging: true
           includeDev: true
