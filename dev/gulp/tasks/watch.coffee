@@ -28,7 +28,9 @@ module.exports = (gulp, gulpPlugins, config, utils)->
 
     gulp.src config.publishDir
     .pipe gulpPlugins.webserver
-      livereload: true
+      livereload:
+        enable: true
+        filter: (fileName)-> return !fileName.match(/.map$/)
       port: 50000
       open: config.serverDefaultPath
       directoryListing: true
