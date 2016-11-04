@@ -155,7 +155,7 @@ module.exports = (gulp, gulpPlugins, config)->
           { loadMaps: true }
         )
 
-        jsFilter = gulpPlugins.filter ['*.js', '!*.map'], { restore: true }
+        jsFilter = gulpPlugins.filter [ '**/*.js' ], { restore: true }
         stream = stream.pipe jsFilter
         stream = utils.compressJs stream
         .pipe jsFilter.restore
@@ -237,7 +237,7 @@ module.exports = (gulp, gulpPlugins, config)->
         .pipe gulpPlugins.plumber errorHandler: utils.errorHandler taskName
         .pipe webpackStream webpackConfig, null, (e, stats)->
 
-        jsFilter = gulpPlugins.filter ['*.js', '!*.map'], { restore: true }
+        jsFilter = gulpPlugins.filter [ '**/*.js' ], { restore: true }
         stream = stream.pipe jsFilter
         stream = utils.compressJs stream
         .pipe jsFilter.restore
@@ -260,7 +260,7 @@ module.exports = (gulp, gulpPlugins, config)->
 
       gulp.task taskName, ->
         stream = gulp.src src
-        .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'concat'
+        .pipe gulpPlugins.plumber errorHandler: utils.errorHandler taskName
 
         stream = utils.sourcemap stream, (stream)->
           return stream
@@ -306,7 +306,7 @@ module.exports = (gulp, gulpPlugins, config)->
       if config.sourcemap
         stream = stream.pipe gulpPlugins.sourcemaps.init(initOpt)
         stream = callback stream
-        return stream.pipe gulpPlugins.sourcemaps.write('.')
+        return stream.pipe gulpPlugins.sourcemaps.write('.', { includeContent: false })
       else
         return callback stream
 

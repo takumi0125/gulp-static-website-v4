@@ -5,7 +5,7 @@
 module.exports = (gulp, gulpPlugins, config, utils)->
   # sass
   gulp.task 'sass', ->
-    cssFilter = gulpPlugins.filter ['*.css', '!*.map'], { restore: true }
+    cssFilter = gulpPlugins.filter [ '**/*.css'], { restore: true }
 
     stream = gulp.src utils.createSrcArr 'sass'
     .pipe gulpPlugins.changed config.publishDir, { extension: '.css' }
@@ -28,7 +28,7 @@ module.exports = (gulp, gulpPlugins, config, utils)->
 
   # sassAll
   gulp.task 'sassAll', ->
-    cssFilter = gulpPlugins.filter ['*.css', '!*.map'], { restore: true }
+    cssFilter = gulpPlugins.filter [ '**/*.css' ], { restore: true }
 
     stream = gulp.src utils.createSrcArr 'sass'
     .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'sass'
