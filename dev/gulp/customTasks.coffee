@@ -18,8 +18,7 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   # utils.createCoffeeExtractTask(
   #   'indexJs'
   #   [
-  #     "#{config.srcDir}/#{config.assetsDir}/js/_init.coffee"
-  #     "#{config.srcDir}/#{config.assetsDir}/js/_index/index.coffee"
+  #     "#{config.srcDir}/#{config.assetsDir}/js/_index/**/*"
   #   ]
   #   "#{config.publishDir}/#{config.assetsDir}/js"
   #   'index'
@@ -28,10 +27,10 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   # common.js
   # utils.createBrowserifyTask(
   #   'commonJs'
-  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_common.coffee" ]
+  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_common/init.coffee" ]
   #   [
+  #     "#{config.srcDir}/#{config.assetsDir}/js/_common/**/*"
   #     "#{config.srcDir}/#{config.assetsDir}/js/_utils/**/*"
-  #     "#{config.srcDir}/#{config.assetsDir}/js/_glsl/**/*"
   #   ]
   #   "#{config.publishDir}/#{config.assetsDir}/js"
   #   'common'
@@ -40,11 +39,23 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   # common.js
   utils.createWebpackJsTask(
     'commonJs'
-    [ "#{config.srcDir}/#{config.assetsDir}/js/_common.coffee" ]
+    [ "#{config.srcDir}/#{config.assetsDir}/js/_common/init.coffee" ]
     [
       "#{config.srcDir}/#{config.assetsDir}/js/_utils/**/*"
-      "#{config.srcDir}/#{config.assetsDir}/js/_glsl/**/*"
+      "#{config.srcDir}/#{config.assetsDir}/js/_common/**/*"
     ]
     "#{config.publishDir}/#{config.assetsDir}/js"
     'common'
+  )
+
+  # index.js
+  utils.createWebpackJsTask(
+    'indexJs'
+    [ "#{config.srcDir}/#{config.assetsDir}/js/_index/init.coffee" ]
+    [
+      "#{config.srcDir}/#{config.assetsDir}/js/_utils/**/*"
+      "#{config.srcDir}/#{config.assetsDir}/js/_index/**/*"
+    ]
+    "#{config.publishDir}/#{config.assetsDir}/js"
+    'index'
   )

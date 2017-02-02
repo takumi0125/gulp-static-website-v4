@@ -306,7 +306,7 @@ module.exports = (gulp, gulpPlugins, config)->
       if config.sourcemap
         stream = stream.pipe gulpPlugins.sourcemaps.init(initOpt)
         stream = callback stream
-        return stream.pipe gulpPlugins.sourcemaps.write('.', { includeContent: false })
+        return stream.pipe gulpPlugins.sourcemaps.write('.')
       else
         return callback stream
 
@@ -314,26 +314,13 @@ module.exports = (gulp, gulpPlugins, config)->
     #
     # compressJs
     #
-    compressJs: (stream, sourcemap = false)->
+    compressJs: (stream, sourcemap = false, sourcemapInitOpt = {})->
       if config.compress.js
         if sourcemap
-          return utils.sourcemap stream, (stream)->
+          return utils.sourcemap(stream, (stream)->
             return stream.pipe gulpPlugins.uglify preserveComments: 'some'
+          , sourcemapInitOpt)
         else
           return stream.pipe gulpPlugins.uglify preserveComments: 'some'
-      else
-        return stream
-
-
-    #
-    # compressCss
-    #
-    compressCss: (stream, sourcemap = false)->
-      if config.compress.css
-        if sourcemap
-          return utils.sourcemap stream, (stream)->
-            return stream.pipe gulpPlugins.cssmin()
-        else
-          return stream.pipe gulpPlugins.cssmin()
       else
         return stream

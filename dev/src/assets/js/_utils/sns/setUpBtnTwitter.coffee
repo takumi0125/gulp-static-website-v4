@@ -12,7 +12,5 @@ module.exports = ($btn, text, shareURL = '')->
     url +="url=#{encodeURIComponent(shareURL)}&text=#{encodeURIComponent(text)}"
 
   $btn.on 'click', (e)->
-    e.preventDefault()
-    e.stopPropagation()
     window.open url, 'twitterShare', 'width=670,height=400'
-    return
+    return false

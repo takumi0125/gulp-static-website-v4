@@ -11,7 +11,5 @@ module.exports = ($btn, shareURL, description = '')->
     url += "&description=#{encodeURIComponent(description)}"
 
   $btn.on 'click', (e)->
-    e.preventDefault()
-    e.stopPropagation()
     window.open url, "facebookShare#{new Date().getTime()}", 'width=670,height=400'
-    return
+    return false

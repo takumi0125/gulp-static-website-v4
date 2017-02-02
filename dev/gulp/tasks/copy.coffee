@@ -17,9 +17,12 @@ module.exports = (gulp, gulpPlugins, config, utils)->
     stream = gulp.src utils.createSrcArr 'css'
     .pipe gulpPlugins.changed config.publishDir
     .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'copyCss'
-    .pipe gulpPlugins.autoprefixer()
 
-    stream = utils.compressCss stream, true
+    stream = utils.sourcemap stream, (stream)->
+      return stream.pipe gulpPlugins.postcss([
+        require('autoprefixer')({ browsers: config.autoprefixerOpt })
+        require('cssnano')({ autoprefixer: false })
+      ])
 
     stream
     .pipe gulp.dest config.publishDir

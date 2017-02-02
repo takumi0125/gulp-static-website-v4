@@ -35,11 +35,16 @@ module.exports =
 
   isiPad           : require './ua/isiPad'
   isiPhone         : require './ua/isiPhone'
+  isiPod           : require './ua/isiPod'
+  isiOS            : require './ua/isiOS'
 
   isAndroid        : require './ua/isAndroid'
 
   getiOSVersion    : require './ua/getAndroidVersion'
   getAndroidVersion: require './ua/getAndroidVersion'
+
+  # use mobile detect
+  checkDevice: require './ua/checkDevice'
 
 #
 # defined in window object

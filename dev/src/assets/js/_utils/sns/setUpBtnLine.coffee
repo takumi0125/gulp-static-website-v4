@@ -12,7 +12,5 @@ module.exports = ($btn, text, shareURL = '')->
     url += "#{encodeURIComponent(text)}\n#{encodeURIComponent(shareURL)}"
 
   $btn.on 'click', (e)->
-    e.preventDefault()
-    e.stopPropagation()
     window.open url, 'lineShare'
-    return
+    return false

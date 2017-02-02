@@ -5,25 +5,19 @@
 //------------------//
 
 @mixin sizeS {
-  @media screen and (max-width: 680px) {
+  @media screen and (max-width: 750px) {
     @content;
   }
 }
 
 @mixin sizeM {
-  @media screen and (min-width: 681px) and (max-width: 980px) {
+  @media screen and (min-width: 751px) and (max-width: 950px) {
     @content;
   }
 }
 
-@mixin sizeSM {
-  @media screen and (min-width: 681px) and (max-width: 840px) {
-    @content;
-  }
-}
-
-@mixin forLessSizeM {
-  @media screen and (max-width: 980px) {
+@mixin sizeL {
+  @media screen and (min-width: 951px) {
     @content;
   }
 }
@@ -61,7 +55,7 @@ $easeInOutCubic: cubic-bezier(0.645, 0.045, 0.355, 1.000);
 $easeInOutQuart: cubic-bezier(0.770, 0.000, 0.175, 1.000);
 $easeInOutQuint: cubic-bezier(0.860, 0.000, 0.070, 1.000);
 $easeInOutSine: cubic-bezier(0.445, 0.050, 0.550, 0.950);
-$easeInOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+$easeInOutExpo: cubic-bezier(1.000, 0.000, 0.000, 1.000);
 $easeInOutCirc: cubic-bezier(0.785, 0.135, 0.150, 0.860);
 $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
 
@@ -144,6 +138,23 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
   }
 }
 
+@mixin btnLabelSpriteT($width, $height, $sprite) {
+  width: $width;
+  height: $height;
+  position: relative;
+  a {
+    @include absoluteTopLeft;
+    display: block;
+    width: 100%;
+    height: 100%;
+    span {
+      @include sprite($sprite);
+      @include hidetxt;
+      @include absoluteCenterVHT;
+    }
+  }
+}
+
 // with spritesmith
 @mixin btnLabelSprite2x($width, $height, $sprite) {
   width: $width;
@@ -162,28 +173,26 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
   }
 }
 
+@mixin btnLabelSprite2xT($width, $height, $sprite) {
+  width: $width;
+  height: $height;
+  position: relative;
+  a {
+    @include absoluteTopLeft;
+    display: block;
+    width: 100%;
+    height: 100%;
+    span {
+      @include sprite2x($sprite);
+      @include hidetxt;
+      @include absoluteCenterVHT;
+    }
+  }
+}
+
 //--------------//
 //   position   //
 //--------------//
-
-@mixin negativeMarginCenterVH($marginTop, $marginLeft) {
-  position: absolute;
-  margin: $marginTop 0 0 $marginLeft;
-  left: 50%;
-  top: 50%;
-}
-
-@mixin negativeMarginCenterV($marginTop) {
-  position: absolute;
-  margin-top: $marginTop;
-  top: 50%;
-}
-
-@mixin negativeMarginCenterH($marginLeft) {
-  position: absolute;
-  margin-left: $marginLeft;
-  left: 50%;
-}
 
 @mixin absoluteCenterVH {
   position: absolute;
@@ -194,6 +203,13 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
   margin: auto;
 }
 
+@mixin absoluteCenterVHT {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @mixin absoluteCenterV {
   position: absolute;
   top: 0;
@@ -202,12 +218,24 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
   margin-bottom: auto;
 }
 
+@mixin absoluteCenterVT {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 @mixin absoluteCenterH {
   position: absolute;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
+}
+
+@mixin absoluteCenterHT {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @mixin absoluteTopLeft {
@@ -235,40 +263,65 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
 }
 
 @mixin absoluteTopCenter {
-  position: absolute;
+  @include absoluteCenterH;
   top: 0;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+@mixin absoluteTopCenterT {
+  @include absoluteCenterHT;
+  top: 0;
 }
 
 @mixin absoluteBottomCenter {
-  position: absolute;
+  @include absoluteCenterH;
   bottom: 0;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+@mixin absoluteBottomCenterT {
+  @include absoluteCenterHT;
+  bottom: 0;
 }
 
 @mixin absoluteCenterLeft {
-  position: absolute;
+  @include absoluteCenterV;
   left: 0;
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
+}
+
+@mixin absoluteCenterLeftT {
+  @include absoluteCenterVT;
+  left: 0;
 }
 
 @mixin absoluteCenterRight {
-  position: absolute;
+  @include absoluteCenterV;
   right: 0;
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
 }
+
+@mixin absoluteCenterRightT {
+  @include absoluteCenterVT;
+  right: 0;
+}
+
+
+@mixin negativeMarginCenterVH($marginTop, $marginLeft) {
+  position: absolute;
+  margin: $marginTop 0 0 $marginLeft;
+  left: 50%;
+  top: 50%;
+}
+
+@mixin negativeMarginCenterV($marginTop) {
+  position: absolute;
+  margin-top: $marginTop;
+  top: 50%;
+}
+
+@mixin negativeMarginCenterH($marginLeft) {
+  position: absolute;
+  margin-left: $marginLeft;
+  left: 50%;
+}
+
 
 @mixin sprite-width-2x($sprite) {
   width: nth($sprite, 5) / 2;
@@ -320,4 +373,8 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
     clear: both;
     visibility: hidden;
   }
+}
+
+@mixin breakall {
+  word-break: break-all !important;
 }

@@ -5,21 +5,16 @@
 module.exports = (gulp, gulpPlugins, config, utils)->
   # sass
   gulp.task 'sass', ->
-    cssFilter = gulpPlugins.filter [ '**/*.css'], { restore: true }
-
     stream = gulp.src utils.createSrcArr 'sass'
     .pipe gulpPlugins.changed config.publishDir, { extension: '.css' }
     .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'sass'
 
     stream = utils.sourcemap stream, (stream)->
       return stream.pipe gulpPlugins.sass outputStyle: 'expanded'
-
-    stream
-    .pipe cssFilter
-    .pipe gulpPlugins.autoprefixer(browsers: config.autoprefixerOpt)
-    .pipe cssFilter.restore
-
-    stream = utils.compressCss stream
+      .pipe gulpPlugins.postcss([
+        require('autoprefixer')({ browsers: config.autoprefixerOpt })
+        require('cssnano')({ autoprefixer: false })
+      ])
 
     stream
     .pipe gulp.dest config.publishDir
@@ -28,20 +23,15 @@ module.exports = (gulp, gulpPlugins, config, utils)->
 
   # sassAll
   gulp.task 'sassAll', ->
-    cssFilter = gulpPlugins.filter [ '**/*.css' ], { restore: true }
-
     stream = gulp.src utils.createSrcArr 'sass'
     .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'sass'
 
     stream = utils.sourcemap stream, (stream)->
       return stream.pipe gulpPlugins.sass outputStyle: 'expanded'
-
-    stream
-    .pipe cssFilter
-    .pipe gulpPlugins.autoprefixer(browsers: config.autoprefixerOpt)
-    .pipe cssFilter.restore
-
-    stream = utils.compressCss stream
+      .pipe gulpPlugins.postcss([
+        require('autoprefixer')({ browsers: config.autoprefixerOpt })
+        require('cssnano')({ autoprefixer: false })
+      ])
 
     stream
     .pipe gulp.dest config.publishDir
