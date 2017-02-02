@@ -19,12 +19,7 @@ module.exports = (gulp, gulpPlugins, config, utils)->
     .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'copyCss'
 
     stream = utils.sourcemap stream, (stream)->
-      return stream.pipe gulpPlugins.postcss([
-        require('autoprefixer')({ browsers: config.autoprefixerOpt })
-        require('cssnano')({ autoprefixer: false })
-      ])
-
-    stream
+      return utils.postCSS(stream)
     .pipe gulp.dest config.publishDir
     .pipe gulpPlugins.debug title: gulpPlugins.util.colors.cyan('[copyCss]:')
 

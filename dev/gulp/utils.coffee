@@ -324,3 +324,17 @@ module.exports = (gulp, gulpPlugins, config)->
           return stream.pipe gulpPlugins.uglify preserveComments: 'some'
       else
         return stream
+
+
+    #
+    # PostCSS
+    #
+    postCSS: (stream)->
+      postCSSOptions = [
+        require('autoprefixer')({ browsers: config.autoprefixerOpt })
+      ]
+
+      if config.compress.css
+        postCSSOptions.push require('cssnano')({ autoprefixer: false })
+
+      return stream.pipe gulpPlugins.postcss(postCSSOptions)

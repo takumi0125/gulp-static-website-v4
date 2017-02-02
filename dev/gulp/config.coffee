@@ -40,7 +40,7 @@ module.exports = (devDir)->
     # ファイル圧縮
     compress:
       # CSSを圧縮するかどうか
-      css: false
+      css: true
 
       # JSを圧縮するかどうか
       js: true

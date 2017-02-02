@@ -10,11 +10,8 @@ module.exports = (gulp, gulpPlugins, config, utils)->
     .pipe gulpPlugins.plumber errorHandler: utils.errorHandler 'sass'
 
     stream = utils.sourcemap stream, (stream)->
-      return stream.pipe gulpPlugins.sass outputStyle: 'expanded'
-      .pipe gulpPlugins.postcss([
-        require('autoprefixer')({ browsers: config.autoprefixerOpt })
-        require('cssnano')({ autoprefixer: false })
-      ])
+      stream = stream.pipe gulpPlugins.sass(outputStyle: 'expanded')
+      return utils.postCSS(stream)
 
     stream
     .pipe gulp.dest config.publishDir
