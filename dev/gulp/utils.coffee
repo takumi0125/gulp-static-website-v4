@@ -6,7 +6,6 @@ buffer        = require 'vinyl-buffer'
 pngquant      = require 'imagemin-pngquant'
 mergeStream   = require 'merge-stream'
 source        = require 'vinyl-source-stream'
-stringify     = require 'stringify'
 webpackStream = require 'webpack-stream'
 webpack       = require 'webpack'
 
