@@ -25,18 +25,6 @@ module.exports = (gulp, gulpPlugins, config, utils)->
   # )
 
   # common.js
-  # utils.createBrowserifyTask(
-  #   'commonJs'
-  #   [ "#{config.srcDir}/#{config.assetsDir}/js/_common/init.coffee" ]
-  #   [
-  #     "#{config.srcDir}/#{config.assetsDir}/js/_common/**/*"
-  #     "#{config.srcDir}/#{config.assetsDir}/js/_utils/**/*"
-  #   ]
-  #   "#{config.publishDir}/#{config.assetsDir}/js"
-  #   'common'
-  # )
-
-  # common.js
   utils.createWebpackJsTask(
     'commonJs'
     [ "#{config.srcDir}/#{config.assetsDir}/js/_common/init.coffee" ]

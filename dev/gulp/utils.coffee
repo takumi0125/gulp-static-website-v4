@@ -2,7 +2,6 @@
 ### utils ###
 #############
 
-browserify    = require 'browserify'
 buffer        = require 'vinyl-buffer'
 pngquant      = require 'imagemin-pngquant'
 mergeStream   = require 'merge-stream'
@@ -114,75 +113,6 @@ module.exports = (gulp, gulpPlugins, config)->
 
 
     #
-    # browserifyのタスクを生成 (coffeescript, babel[es2015], glsl使用)
-    #
-    # @param {String}       taskName        タスクを識別するための名前 すべてのタスク名と異なるものにする
-    # @param {Array|String} entries         browserifyのentriesオプションに渡す node-globのシンタックスで指定
-    # @param {Array|String} src             entriesを除いた全ソースファイル (watchタスクで監視するため) node-globのシンタックスで指定
-    # @param {String}       outputDir       最終的に出力されるjsが格納されるディレクトリ
-    # @param {String}       outputFileName  最終的に出力されるjsファイル名(拡張子なし)
-    #
-    # entries以外のソースファイルを指定する理由は、coffeeInclude標準のwatchの監視の対象外にするためです。
-    #
-    createBrowserifyTask: (taskName, entries, src, outputDir, outputFileName) ->
-      config.jsConcatTaskNames.push taskName
-
-      if entries instanceof String then entries = [ entries ]
-      for entryPath in entries then config.filePath.coffeeInclude.push "!#{entryPath}"
-
-      if src instanceof String then src = [ src ]
-      for srcPath in src then config.filePath.coffeeInclude.push "!#{srcPath}"
-
-      bundle = (b)->
-        stream = b.bundle()
-        # .pipe gulpPlugins.plumber errorHandler: false
-        .on 'error', ->
-          # can't handle error by plumber
-          args = Array.prototype.slice.call arguments
-
-          gulpPlugins.notify.onError
-            title: "#{taskName} Error"
-            message: '<%= error.message %>'
-          .apply @, args
-
-          @emit 'end'
-        .pipe source "#{outputFileName}.js"
-        .pipe buffer()
-
-        stream = utils.sourcemap(
-          stream
-          (stream)-> return utils.compressJs stream
-          { loadMaps: true }
-        )
-
-        jsFilter = gulpPlugins.filter [ '**/*.js' ], { restore: true }
-        stream = stream.pipe jsFilter
-        stream = utils.compressJs stream
-        .pipe jsFilter.restore
-        .pipe gulp.dest outputDir
-        .pipe gulpPlugins.debug title: gulpPlugins.util.colors.cyan("[#{taskName}]")
-
-
-      browserifyTask = (watch = false)->
-        b = browserify
-          entries: entries
-          extensions: [ '.coffee', '.es', '.es6', '.glsl', '.vert', '.frag' ]
-          debug: true
-        .transform 'babelify', { presets: [ 'es2015' ], plugins: [ 'glslify' ] }
-        .transform 'coffeeify'
-        .transform 'debowerify'
-        .transform 'glslify'
-        .transform stringify, {
-          appliesTo: { includeExtensions: [ '.html', '.json' ] }
-          minify: true
-        }
-        bundle b
-
-      gulp.task taskName, -> browserifyTask(false)
-      config.optionsWatchTasks.push -> gulpPlugins.watch entries.concat(src), -> gulp.start [ taskName ]
-
-
-    #
     # webpackのタスクを生成 (coffeescript, babel[es2015], glsl使用)
     #
     # @param {String}       taskName        タスクを識別するための名前 すべてのタスク名と異なるものにする
@@ -236,11 +166,6 @@ module.exports = (gulp, gulpPlugins, config)->
         stream = gulp.src entries
         .pipe gulpPlugins.plumber errorHandler: utils.errorHandler taskName
         .pipe webpackStream webpackConfig, null, (e, stats)->
-
-        jsFilter = gulpPlugins.filter [ '**/*.js' ], { restore: true }
-        stream = stream.pipe jsFilter
-        stream = utils.compressJs stream
-        .pipe jsFilter.restore
 
         stream.pipe gulp.dest outputDir
 

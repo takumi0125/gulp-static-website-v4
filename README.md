@@ -71,7 +71,7 @@ clearDir: [ "/**/*" ]
 
 ## カスタムタスク生成関数
 
-スプライト画像、webpack, browserify, jsのconcat, coffee scriptのconcatを使用する場合は、
+スプライト画像、webpack, jsのconcat, coffee scriptのconcatを使用する場合は、
 `dev/gulp/utils.coffee` に定義されている以下の関数を使用し、タスクを定義してください。
 以下の関数を実行すると、watchタスクも同時に定義されます。
 
@@ -118,32 +118,14 @@ coffee script で concat する場合のタスクを生成する関数です。
  - `outputDir` **{String}**: 最終的に出力される js が格納されるディレクトリ
  - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
 
-### utils.createBrowserifyTask
-browserify のタスクを生成する関数です。coffee script, babel (es2015), glsl と bowerを使用できます。
-
-bowerを使用する場合は、タスク実行前に
-```
-bower install
-```
-を実行してください。
-
-**Params**
-
- - `taskName` **{Object}**: タスクを識別するための名前 すべてのタスク名と異なるものにする
- - `entries` **{Array|String}**: browserify の entriesオプションに渡す node-glob のシンタックスで指定
- - `src` **{Array|String}**: entries を除いた全ソースファイル ( watch タスクで監視するため) node-glob のシンタックスで指定
- - `outputDir` **{String}**: 最終的に出力されるjsが格納されるディレクトリ
- - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
- - `compress` **{Boolean}**: 圧縮するかどうか
-
 
 ### utils.createWebpackJsTask
-webpack のタスクを生成する関数です。browserify 同様、coffee script, babel (es2015), glsl と bowerを使用できます。
+webpack のタスクを生成する関数です。coffee script, babel (es2015), glsl と bowerを使用できます。
 
 **Params**
 
  - `taskName` **{Object}**: タスクを識別するための名前 すべてのタスク名と異なるものにする
- - `entries` **{Array|String}**: browserify の entriesオプションに渡す node-glob のシンタックスで指定
+ - `entries` **{Array|String}**: webpack の entriesオプションに渡す node-glob のシンタックスで指定
  - `src` **{Array|String}**: entries を除いた全ソースファイル ( watch タスクで監視するため) node-glob のシンタックスで指定
  - `outputDir` **{String}**: 最終的に出力されるjsが格納されるディレクトリ
  - `outputFileName` **{String}**: 最終的に出力される js ファイル名(拡張子なし)
