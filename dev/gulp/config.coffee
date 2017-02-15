@@ -64,7 +64,7 @@ module.exports = (devDir)->
     others  : [
       "#{config.srcDir}/**/*"
       "#{config.srcDir}/**/.htaccess"
-      "!#{config.srcDir}/**/*.{html,pug,jade,css,sass,scss,js,json,coffee,cson,md}"
+      "!#{config.srcDir}/**/*.{html,pug,jade,css,sass,scss,js,json,coffee,cson,md,map}"
       "!#{config.srcDir}/**/#{config.imgDirName}/**"
     ]
     pugInclude: [
