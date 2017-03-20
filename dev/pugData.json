@@ -14,7 +14,7 @@
   "ogLocale": "ja_JP",
   "twitterCardType": "summary_large_image",
   "appleTouchIcon": "/apple-touch-icon.png",
-  "favicon": "/favicon.png",
+  "favicon": "/favicon.ico",
   "showOGP": true,
   "showTwitterCard": true
 }

@@ -1,15 +1,18 @@
 #
-# checkDeivce
+# checkDeivce (use MobileDetect)
 #
 
-module.exports = ($html)->
+module.exports = ->
   md = new MobileDetect(navigator.userAgent)
+  html = document.body.parentElement
 
-  if md.tablet()
-    $html.addClass 'tablet'
-  else if md.phone()
-    $html.addClass 'mobile'
+  if md.mobile()
+    html.classList.add 'mobile'
+
+  else if md.tablet()
+    html.classList.add 'tablet'
+
   else
-    $html.addClass 'desktop'
+    html.classList.add 'desktop'
 
   return md

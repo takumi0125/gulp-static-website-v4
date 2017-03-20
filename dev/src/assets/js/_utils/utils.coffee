@@ -12,6 +12,7 @@ module.exports =
   setUpBtnFacebook: require './sns/setUpBtnFacebook'
 
   # animation
+  # transitionend: require './animation/jQueryTransitionend'
   transitionend: require './animation/transitionend'
 
   # array
@@ -42,6 +43,8 @@ module.exports =
 
   getiOSVersion    : require './ua/getAndroidVersion'
   getAndroidVersion: require './ua/getAndroidVersion'
+
+  vendorPrefix : require './ua/vendorPrefix'
 
   # use mobile detect
   checkDevice: require './ua/checkDevice'

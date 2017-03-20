@@ -2,8 +2,16 @@
 # transitionend
 #
 
-module.exports = (namescape = '')->
-  if namescape
-    return "transitionend.#{namescape} webkitTransitionEnd.#{namescape} mozTransitionEnd.#{namescape} oTransitionEnd.#{namescape}"
-  else
-    return 'transitionend webkitTransitionEnd mozTransitionEnd oTransitionEnd'
+module.exports = (->
+  el = document.createElement 'p'
+  transitions =
+    transition: 'transitionend'
+    OTransition: 'oTransitionEnd'
+    MozTransition: 'transitionend'
+    WebkitTransition: 'webkitTransitionEnd'
+
+  for key, value of transitions
+    if el.style[key]? then return transitions[key]
+
+  return 'transitionend'
+)()
