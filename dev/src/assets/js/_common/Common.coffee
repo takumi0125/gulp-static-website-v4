@@ -1,15 +1,7 @@
 utils = require '../_utils/utils'
+utils.md = utils.checkDevice()
 
 class Common
   constructor: ->
-    @$window = $ window
-    @$html = $ 'html'
-    @$body = $ 'body'
-
-
-    # check device
-    utils.md = utils.checkDevice @$html
-
-
 
 module.exports = Common

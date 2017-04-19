@@ -1,2 +1,4 @@
 Common = require './Common'
-$ -> new Common()
+window.addEventListener('DOMContentLoaded', ->
+  new Common()
+, false)

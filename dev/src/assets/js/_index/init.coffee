@@ -1,2 +1,4 @@
 Index = require './Index'
-$ -> new Index()
+window.addEventListener('DOMContentLoaded', ->
+  new Index()
+, false)
